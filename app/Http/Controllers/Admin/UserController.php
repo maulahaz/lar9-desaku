@@ -14,7 +14,7 @@ class UserController extends Controller
     {
         $this->middleware(['auth']);
         
-        $this->data['webTitle'] = 'Web Bootcamp :: Latihan Laravel';
+        $this->data['webTitle'] = env('APP_WEB_TITLE');
         // $this->data['currentMenu'] = 'Admin';
         // $this->data['currentSubMenu'] = 'Materi';
     }

@@ -36,8 +36,9 @@
                 <div class="card card-primary card-outline">
                     <div class="card-header">
                         <!-- ONLY WEBMASTER CAN ADD DATA -->
-                        @if($loggedinInfo->role_id == 99)
-                        <a href="{{ url('/admin/user/create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;Tambah Data</a>
+                        @if($loggedinInfo->role_id == 4)
+                        <!-- 4 Code for Secretary, a person who can add data Penduduk -->
+                        <a href="{{ url('/admin/penduduk/create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;Tambah Data</a>
                         @endif
                         <div class="card-tools">
                             <form action="{{ route('admin.penduduk.index') }}" method="GET" class="form-inline">
