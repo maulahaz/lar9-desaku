@@ -5,22 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penduduk extends Model
+class Kelahiran extends Model
 {
     use HasFactory;
 
-    protected $table = 'penduduks';
+    protected $table = 'kelahirans';
 
     protected $fillable = [
-        'nik',
-        'nama',
         'tempat_lahir',
         'tanggal_lahir',
+        'jam_lahir',
+        'nama',
         'jenis_kelamin',
-        'agama',
-        'pendidikan',
-        'profesi',
-        'alamat',
-        'email'
+        'panjang',
+        'berat',
+        'ayah',
+        'ibu',
+        'anak_ke',
+        'jenis_kelahiran',
+        'penolong_kelahiran',
     ];
 }

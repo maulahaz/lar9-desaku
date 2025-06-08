@@ -125,30 +125,9 @@
                 </li> -->
               </ul>
             </li>
-            <li class="nav-item has-treeview {{request()->is('admin/tugas') ? 'menu-open' : 'menu-close'}}">
-              <a href="#" class="nav-link {{request()->is('tugas') ? 'active' : ''}}">
-                <i class="nav-icon fas fa-tasks"></i>
-                <p>
-                  Tugas
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ url('admin/tugas') }}" class="nav-link {{request()->is('admin/tugas') ? 'active' : ''}}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>List</p>
-                  </a>
-                </li>
-                <!-- <li class="nav-item">
-                  <a href="{{ url('admin/tugas/check') }}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Periksa Tugas</p>
-                  </a>
-                </li> -->
-              </ul>
-            </li>
+            
             @if($loggedinInfo->role_id == 88)
+            {{-- Penduduk --}}
             <li class="nav-item has-treeview {{request()->is('admin/penduduk') ? 'menu-open' : 'menu-close'}}">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
@@ -163,6 +142,26 @@
                 </li>
               </ul>
             </li>
+
+            {{-- Kelahiran --}}
+            <li class="nav-item has-treeview {{request()->is('admin/kelahiran') ? 'menu-open' : 'menu-close'}}">
+              <a href="#" class="nav-link {{request()->is('tugas') ? 'active' : ''}}">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                  Kelahiran
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ url('admin/kelahiran') }}" class="nav-link {{request()->is('admin/kelahiran') ? 'active' : ''}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Data</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
             @endif
             @if($loggedinInfo->role_id == 88)
             <li class="nav-item has-treeview {{request()->is('admin/materi') ? 'menu-open' : 'menu-close'}}">

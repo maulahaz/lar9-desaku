@@ -35,8 +35,7 @@
             <div class="col-12">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <!-- ONLY WEBMASTER CAN ADD DATA -->
-                        @if($loggedinInfo->role_id == 4)
+                        @if($loggedinInfo->role_id == 88)
                         <!-- 4 Code for Secretary, a person who can add data Penduduk -->
                         <a href="{{ url('/admin/penduduk/create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;Tambah Data</a>
                         @endif

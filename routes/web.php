@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 //--ADMIN:
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\PendudukController;
+use App\Http\Controllers\Admin\KelahiranController;
 use App\Http\Controllers\Admin\MateriController;
 use App\Http\Controllers\Admin\TugasController;
 use App\Http\Controllers\Admin\KursusController;
-use App\Http\Controllers\Admin\PendudukController; // Added this line
 //--AUTH:
 use App\Http\Controllers\Auth\AuthController;
 //--PUBLIC:
@@ -93,7 +94,12 @@ Route::post('tugas-exec/update/{tugasId}', [TugasExecController::class, 'updateT
 Route::post('tugas-exec/upload-file/{id}', [TugasExecController::class, 'uploadFile']);
 Route::delete('tugas-exec/delete-file/{id}', [TugasExecController::class, 'removeFile']);
 
-// Added this block
+//--Penduduk
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('penduduk', PendudukController::class);
+});
+
+//--Kelahiran
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('kelahiran', KelahiranController::class);
 });

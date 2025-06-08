@@ -50,7 +50,10 @@ class PendudukController extends Controller
 
     public function create()
     {
-        return view('admin.penduduk.create');
+        $this->data['pageTitle'] = 'Tambah Data Penduduk';
+        $this->data['penduduk'] = new Penduduk(['nik' => $this->generateNIK()]);
+
+        return view('admin.penduduk.form', $this->data);
     }
 
     public function store(Request $request)
@@ -71,7 +74,10 @@ class PendudukController extends Controller
 
     public function edit(Penduduk $penduduk)
     {
-        return view('admin.penduduk.edit', compact('penduduk'));
+        // return view('admin.penduduk.edit', compact('penduduk'));
+        $this->data['pageTitle'] = 'Edit Data Penduduk';
+        $this->data['penduduk'] = $penduduk;
+        return view('admin.penduduk.form', $this->data);
     }
 
     public function update(Request $request, Penduduk $penduduk)
@@ -102,5 +108,17 @@ class PendudukController extends Controller
         $penduduk->delete();
 
         return redirect()->route('admin.penduduk.index')->with('success', 'Data penduduk berhasil dihapus.');
+    }
+
+    private function generateNIK()
+    {
+        do {
+            $nik = '';
+            for ($i = 0; $i < 16; $i++) {
+                $nik .= mt_rand(0, 9);
+            }
+        } while (Penduduk::where('nik', $nik)->exists());
+
+        return $nik;
     }
 }

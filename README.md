@@ -13,27 +13,9 @@ Sebuah aplikasi Web Apps utk Memanaje Desa.
 - User: user_1 // pass123
 - User: staff_1 // pass123
 
+## References:
+- [Aplikasi DUKCAPIL Multi User Menggunakan Laravel 12](https://www.youtube.com/watch?v=r1oUw2wzlEE)
+- [Aplikasi Sistem Informasi Penduduk Menggunakan Laravel 10](https://www.youtube.com/watch?v=-1c4Zs-wHq4)
+
 ## Snapshots:
-![Frontpage](public/images/1-frontpage.png)
-<hr>
-
-!["Login page"](public/images/2-login.png)
-<hr>
-
-![User Profile](public/images/3-profile-login.png)
-<hr>
-
-![Murid--List Tugas](public/images/4-list-tugas-murid.png)
-<hr>
-
-![Murid--List Tugas 2](public/images/5-detail-tugas-murid-2.png)
-<hr>
-
-![Murid--Detail Tugas](public/images/5-detail-tugas-murid.png)
-<hr>
-
-![Murid--Update/Kerjain Tugas](public/images/6-update-tugas-murid.png)
-<hr>
-
-![Guru--Koreksi Tugas Murid](public/images/7-update-tugas-guru.png)
-<hr>
+--blank--
