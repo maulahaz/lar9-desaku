@@ -162,6 +162,44 @@
               </ul>
             </li>
 
+            {{-- Kematian --}}
+            <li class="nav-item has-treeview {{request()->is('admin/kematian') ? 'menu-open' : 'menu-close'}}">
+              <a href="#" class="nav-link {{request()->is('admin/kematian') ? 'active' : ''}}">
+                <i class="nav-icon fas fa-book"></i>
+                <p>
+                  Kematian
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ url('admin/kematian') }}" class="nav-link {{request()->is('admin/kematian') ? 'active' : ''}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Data</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            {{-- Perpindahan --}}
+            <li class="nav-item has-treeview {{request()->is('admin/perpindahan') ? 'menu-open' : 'menu-close'}}">
+              <a href="#" class="nav-link {{request()->is('tugas') ? 'active' : ''}}">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                  Perpindahan
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ url('admin/perpindahan') }}" class="nav-link {{request()->is('admin/perpindahan') ? 'active' : ''}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Data</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
             @endif
             @if($loggedinInfo->role_id == 88)
             <li class="nav-item has-treeview {{request()->is('admin/materi') ? 'menu-open' : 'menu-close'}}">

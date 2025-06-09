@@ -1,21 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+//--AUTH:
+use App\Http\Controllers\Auth\AuthController;
 //--ADMIN:
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PendudukController;
 use App\Http\Controllers\Admin\KelahiranController;
-use App\Http\Controllers\Admin\MateriController;
-use App\Http\Controllers\Admin\TugasController;
-use App\Http\Controllers\Admin\KursusController;
-//--AUTH:
-use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\KematianController;
+use App\Http\Controllers\Admin\PerpindahanController;
 //--PUBLIC:
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
+//--To be deleted:
+use App\Http\Controllers\Admin\MateriController;
+use App\Http\Controllers\Admin\TugasController;
+use App\Http\Controllers\Admin\KursusController;
 use App\Http\Controllers\TugasExecController;
+//
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,6 +71,18 @@ Route::get('/admin/user/hapus/{id}', [UserController::class, 'hapus']);
 Route::resource('admin/user', UserController::class);
 Route::get('/admin/user/reset-password/{id}', [UserController::class, 'resetPassword']);
 
+//--ADMIN:
+Route::prefix('admin')->name('admin.')->group(function () {
+    //--Penduduk:
+    Route::resource('penduduk', PendudukController::class);
+    //--Kelahiran:
+    Route::resource('kelahiran', KelahiranController::class);
+    //--Kematian:
+    Route::resource('kematian', KematianController::class);
+    //--Perpanduan:
+    Route::resource('perpindahan', PerpindahanController::class);
+});
+
 //--MATERI:
 // Route::put('/admin/materi/uploadfile/{id}', [MateriController::class, 'uploadFile']);
 Route::put('/admin/materi/upload-picture/{id}', [MateriController::class, 'uploadFile']);
@@ -93,13 +109,3 @@ Route::get('tugas-exec/{id}/edit', [TugasExecController::class, 'edit']);
 Route::post('tugas-exec/update/{tugasId}', [TugasExecController::class, 'updateTugasExecution']);
 Route::post('tugas-exec/upload-file/{id}', [TugasExecController::class, 'uploadFile']);
 Route::delete('tugas-exec/delete-file/{id}', [TugasExecController::class, 'removeFile']);
-
-//--Penduduk
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('penduduk', PendudukController::class);
-});
-
-//--Kelahiran
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('kelahiran', KelahiranController::class);
-});
