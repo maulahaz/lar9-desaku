@@ -74,7 +74,10 @@ Route::get('/admin/user/reset-password/{id}', [UserController::class, 'resetPass
 //--ADMIN:
 Route::prefix('admin')->name('admin.')->group(function () {
     //--Penduduk:
+    Route::get('penduduk/doc-data-warga', [PendudukController::class, 'docDataWarga'])->name('penduduk.doc-data-warga');
     Route::resource('penduduk', PendudukController::class);
+    Route::get('penduduk/{id}/doc-suket-warga', [PendudukController::class, 'docSuketWarga'])->name('penduduk.doc-suket-warga');
+    Route::get('penduduk/{id}/get-suket-warga', [PendudukController::class, 'downloadSuketWarga'])->name('penduduk.get-suket-warga');
     //--Kelahiran:
     Route::resource('kelahiran', KelahiranController::class);
     //--Kematian:
@@ -82,6 +85,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     //--Perpanduan:
     Route::resource('perpindahan', PerpindahanController::class);
 });
+
+// Route::get('admin/penduduk/{id}/doc', 'PendudukController@personalDoc')->name('admin.penduduk.doc');
 
 //--MATERI:
 // Route::put('/admin/materi/uploadfile/{id}', [MateriController::class, 'uploadFile']);

@@ -72,7 +72,7 @@
                     <div class="card-footer">
                         <a href="{{ url('admin/penduduk') }}" class="btn btn-outline-info">Kembali</a>
                         <a href="{{ url('admin/penduduk/'.$penduduk->id.'/edit') }}" class="btn btn-warning">Edit</a>
-                        <a href="{{ url('admin/penduduk/'.$penduduk->id.'/doc') }}" class="btn btn-primary">Lihat Dokumen</a>
+                        <a href="{{ route('admin.penduduk.doc-suket-warga', $penduduk->id) }}" class="btn btn-primary" target="_blank">Lihat Dokumen</a>
                     </div>
                 </div>
             </div>

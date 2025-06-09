@@ -27,7 +27,7 @@
 
   <div class="card">
     <div class="card-body register-card-body">
-      <p class="login-box-msg">Please login</p>
+      <p class="login-box-msg">Silahkan login</p>
 
       {{-- Notification --}}
 	    <div class="row">
@@ -59,22 +59,22 @@
             <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember">
-                Remember Me
+                Ingat saya
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Log In</button>
           </div>
           <!-- /.col -->
         </div>
       </form>
       <p class="mb-1">
-        <a href="{{url('forgot')}}">I forgot my password</a>
+        <a href="{{url('forgot')}}">Lupa password</a>
       </p>
       <p class="mb-0">
-        <a href="{{ route('register') }}" class="text-center">Register a new membership</a>
+        <a href="{{ route('register') }}" class="text-center">Daftar</a>
       </p>
     </div>
     <!-- /.form-box -->

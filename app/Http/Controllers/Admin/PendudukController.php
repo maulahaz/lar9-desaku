@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use PDF;
 use App\Models\Penduduk;
 
 class PendudukController extends Controller
@@ -120,5 +121,36 @@ class PendudukController extends Controller
         } while (Penduduk::where('nik', $nik)->exists());
 
         return $nik;
+    }
+
+    public function docSuketWarga($id)
+    {
+        //--Generate Surat Keterangan Warga:
+        $penduduk = Penduduk::findOrFail($id);
+        $pdf = PDF::loadView('report.doc-suket-warga', compact('penduduk'));
+        //--Only Stream/View the PDF in browser:
+        // return $pdf->stream('suket_warga_' . $penduduk->nik . '.pdf');
+        //--Only Stream/View the PDF in browser -- New Tab:
+        return $pdf->stream('suket_warga_' . $penduduk->nik . '.pdf', ['Attachment' => false]);
+    }
+
+    public function downloadSuketWarga($id)
+    {
+        //--Generate Surat Keterangan Warga:
+        $penduduk = Penduduk::findOrFail($id);
+        $pdf = PDF::loadView('report.doc-suket-warga', compact('penduduk'));
+        //--To download:
+        return $pdf->download('suket_warga_' . $penduduk->nik . '.pdf');
+    }
+
+    public function docDataWarga()
+    {
+        //--Generate Data Semua Warga:
+        $penduduks = Penduduk::all();
+        $pdf = PDF::loadView('report.doc-data-warga', compact('penduduks'))
+                ->setPaper('a4', 'landscape')
+                ->setOptions(['defaultFont' => 'courier', 'fontHeightRatio' => 0.7]);
+        //--Only Stream/View the PDF in browser -- New Tab:
+        return $pdf->stream('data_warga.pdf', ['Attachment' => false]);
     }
 }

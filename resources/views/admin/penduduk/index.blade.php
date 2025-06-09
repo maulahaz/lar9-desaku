@@ -38,6 +38,7 @@
                         @if($loggedinInfo->role_id == 88)
                         <!-- 4 Code for Secretary, a person who can add data Penduduk -->
                         <a href="{{ url('/admin/penduduk/create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;Tambah Data</a>
+                        <a href="{{ route('admin.penduduk.doc-data-warga') }}" class="btn btn-sm btn-success" target="_blank"><i class="fa fa-file-pdf"></i>&nbsp;Download Data</a>
                         @endif
                         <div class="card-tools">
                             <form action="{{ route('admin.penduduk.index') }}" method="GET" class="form-inline">
@@ -57,14 +58,6 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <!-- <th>NIK</th>
-                                    <th>Nama</th>
-                                    <th>Tempat Lahir</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Agama</th>
-                                    <th>Pendidikan</th>
-                                    <th>Profesi</th> -->
                                     <th>
                                         <a href="{{ route('admin.penduduk.index', ['sort' => 'nik', 'direction' => ($sort === 'nik' && $direction === 'asc') ? 'desc' : 'asc'] + request()->except(['sort', 'direction'])) }}">
                                             NIK
@@ -151,10 +144,10 @@
                                     <td>{{ $penduduk->pendidikan }}</td>
                                     <td>{{ $penduduk->profesi }}</td>
                                     <td>
-                                        <a href="{{ url('/admin/penduduk/'.$penduduk->id) }}" class="btn btn-sm btn-info"><i class="fa fa-search"></i></a>
-                                        <!-- <a href="{{ route('admin.penduduk.edit', $penduduk->id) }}" class="btn btn-sm btn-info">
+                                        <a href="{{ route('admin.penduduk.show', $penduduk->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
+                                        <a href="{{ route('admin.penduduk.edit', $penduduk->id) }}" class="btn btn-sm btn-warning">
                                         <i class="fas fa-edit"></i>
-                                    </a> -->
+                                    </a>
                                         <form action="{{ route('admin.penduduk.destroy', $penduduk->id) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
