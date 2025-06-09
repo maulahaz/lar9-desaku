@@ -40,7 +40,7 @@
             <a href="{{ url('/admin/user/create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;Tambah Data</a>
             @endif
             <div class="card-tools">
-              <div class="input-group input-group-sm" style="width: 150px;">
+              <div class="input-group input-group-sm" style="width: 250px;">
                 <input type="text" name="table_search" class="form-control float-right" placeholder="Cari..">
 
                 <div class="input-group-append">

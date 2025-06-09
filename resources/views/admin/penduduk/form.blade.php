@@ -29,7 +29,7 @@
     <div class="row">
       <div class="col-12">
         <!-- Horizontal Form -->
-        <div class="card card-info">
+        <div class="card card-warning">
           <div class="card-header">
             <h3 class="card-title">Form {{ $pageTitle }}</h3>
           </div>
@@ -85,7 +85,7 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
-            <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-save"></i>&nbsp;Simpan</button>
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i>&nbsp;Simpan</button>
             <a href="{{ route('admin.penduduk.index') }}" class="btn btn-sm btn-default"><i class="fa fa-times"></i>&nbsp;Batal</a>
           </div>
           <!-- /.card-footer -->

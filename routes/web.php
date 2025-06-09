@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PendudukController;
 use App\Http\Controllers\Admin\KelahiranController;
 use App\Http\Controllers\Admin\KematianController;
 use App\Http\Controllers\Admin\PerpindahanController;
+use App\Http\Controllers\Admin\ConfigController;
 //--PUBLIC:
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
@@ -84,6 +85,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('kematian', KematianController::class);
     //--Perpanduan:
     Route::resource('perpindahan', PerpindahanController::class);
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/config', [ConfigController::class, 'index'])->name('admin.config');
+    Route::get('/admin/config/{id}/edit', [ConfigController::class, 'edit'])->name('admin.config.edit');
+    Route::put('/admin/config/{id}', [ConfigController::class, 'update'])->name('admin.config.update');
 });
 
 // Route::get('admin/penduduk/{id}/doc', 'PendudukController@personalDoc')->name('admin.penduduk.doc');

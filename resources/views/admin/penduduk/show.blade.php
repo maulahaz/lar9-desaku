@@ -70,9 +70,9 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ url('admin/penduduk') }}" class="btn btn-outline-info">Kembali</a>
-                        <a href="{{ url('admin/penduduk/'.$penduduk->id.'/edit') }}" class="btn btn-warning">Edit</a>
-                        <a href="{{ route('admin.penduduk.doc-suket-warga', $penduduk->id) }}" class="btn btn-primary" target="_blank">Lihat Dokumen</a>
+                        <a href="{{ url('admin/penduduk') }}" class="btn btn-sm btn-outline-info"><i class="fas fa-arrow-left"></i>&nbsp;Kembali</a>
+                        <a href="{{ url('admin/penduduk/'.$penduduk->id.'/edit') }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>&nbsp;Edit</a>
+                        <a href="{{ route('admin.penduduk.doc-suket-warga', $penduduk->id) }}" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-file-pdf"></i>&nbsp;Lihat Dokumen</a>
                     </div>
                 </div>
             </div>
