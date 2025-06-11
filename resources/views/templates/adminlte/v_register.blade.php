@@ -21,12 +21,12 @@
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html">{{ $pageTitle }}</a>
+    <a href="{{url('/')}}"><img src="{{url('images/logo.png')}}" alt="Beranda" width="200px"></a>
   </div>
 
   <div class="card">
     <div class="card-body register-card-body">
-      <p class="login-box-msg">Register a new membership</p>
+      <p class="login-box-msg">Daftar Warga</p>
 
       {{-- Notification --}}
 	    <div class="row">
@@ -38,7 +38,15 @@
       <form action="{{ route('register') }}" method="post">
       	@csrf
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Full name">
+          <input type="text" class="form-control" name="ktp" value="{{ old('ktp') }}" placeholder="No. KTP">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-id-card"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nama lengkap">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -70,7 +78,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="password_confirmation" placeholder="Retype password">
+          <input type="password" class="form-control" name="password_confirmation" placeholder="Ulangi password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -82,19 +90,19 @@
             <div class="icheck-primary">
               <input type="checkbox" id="agreeTerms" name="terms" value="agree">
               <label for="agreeTerms">
-               I agree to the <a href="#">terms</a>
+               <a href="#">Syarat-2</a> ini saya setujui
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
+            <button type="submit" class="btn btn-primary btn-block">Daftar</button>
           </div>
           <!-- /.col -->
         </div>
       </form>
 
-      <a href="{{ route('login') }}" class="text-center">I already have a membership</a>
+      <a href="{{ route('login') }}" class="text-center">Saya warga</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->

@@ -16,6 +16,7 @@ Sebuah aplikasi Web Apps utk Mengatur Data Desa.
 ## References:
 - [Aplikasi DUKCAPIL Multi User Menggunakan Laravel 12](https://www.youtube.com/watch?v=r1oUw2wzlEE)
 - [Aplikasi Sistem Informasi Penduduk Menggunakan Laravel 10](https://www.youtube.com/watch?v=-1c4Zs-wHq4)
+- [Web Desa Kersik](https://kersik.desa.id/)
 
 ## Snapshots:
 --blank--

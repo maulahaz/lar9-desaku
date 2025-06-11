@@ -13,18 +13,46 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware(['auth']);
-        
+
         $this->data['webTitle'] = env('APP_WEB_TITLE');
         // $this->data['currentMenu'] = 'Admin';
         // $this->data['currentSubMenu'] = 'Materi';
     }
 
-    public function index()
+    public function indexX(Request $request)
     {
         $this->data['pageTitle'] = 'List Data Pengguna';
         // $this->data['dtUser'] = User::all();
         //--Utk Data Webmaster jangan dimasukan:
-        $this->data['dtUser'] = User::whereNotIn('role_id', [88,99])->get();
+        $this->data['dtUser'] = User::whereNotIn('role_id', [88, 99])->get();
+
+        return view('admin.user.v_index', $this->data);
+    }
+
+    public function index(Request $request)
+    {
+        $this->data['pageTitle'] = 'List Data Pengguna';
+
+        $query = User::whereNotIn('role_id', [88, 99]);
+
+        //--Search functionality
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('username', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('name', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        //--Sorting
+        $sort = $request->input('sort', 'created_at');
+        $direction = $request->input('direction', 'desc');
+        $query->orderBy($sort, $direction);
+
+        $this->data['dtUser'] = $query->paginate(10);
+        $this->data['sort'] = $sort;
+        $this->data['direction'] = $direction;
 
         return view('admin.user.v_index', $this->data);
     }
@@ -53,24 +81,24 @@ class UserController extends Controller
         ]);
         if ($posted) {
             return redirect('admin/user')->with('success', 'Data baru berhasil ditambah.');
-        }else{
+        } else {
             return redirect()->back()->with('error', 'Error pada saat tambah data. Silahkan hubungi Administrator.');
         }
     }
 
     public function updateStatusUser(Request $request)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
             $data = $request->all();
             // echo "<pre>"; print_r($data); die();
-            if($data['status'] == 'Active'){
+            if ($data['status'] == 'Active') {
                 $updt_status = 'Inactive';
-            }elseif($data['status'] == 'Inactive'){
+            } elseif ($data['status'] == 'Inactive') {
                 $updt_status = 'Active';
             }
 
             User::where('id', $data['user_id'])->update(['status' => $updt_status]);
-            return response()->json(['status' => $updt_status, 'user_id'=>$data['user_id']]);
+            return response()->json(['status' => $updt_status, 'user_id' => $data['user_id']]);
         }
     }
 
@@ -80,7 +108,7 @@ class UserController extends Controller
         // dd($dtUser);
         $this->data['dtUser'] = $dtUser;
         $this->data['updateID'] = $id;
-        $this->data['pageTitle'] = 'Detail Data Pengguna : "'.$dtUser->username.'"';
+        $this->data['pageTitle'] = 'Detail Data Pengguna : "' . $dtUser->username . '"';
         return view('admin.user.v_show', $this->data);
         // return view('admin.user.v_edit_user', $this->data);
     }
@@ -91,13 +119,13 @@ class UserController extends Controller
         // dd($dtUser);
         $this->data['dtUser'] = $dtUser;
         $this->data['updateID'] = $id;
-        $this->data['pageTitle'] = 'Update Data Pengguna : "'.$dtUser->username.'"';
+        $this->data['pageTitle'] = 'Update Data Pengguna : "' . $dtUser->username . '"';
         return view('admin.user.v_form', $this->data);
     }
-    
+
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'status' => 'required',
             'role_id' => 'required',
         ]);
@@ -111,14 +139,14 @@ class UserController extends Controller
         $dtUser = User::findOrFail($id);
         if ($dtUser->update($postedData)) {
             return redirect('admin/user')->with('success', 'Data berhasil diupdate.');
-        }else{
+        } else {
             return redirect()->back()->with('error', 'Error pada saat update data. Silahkan hubungi Administrator.');
         }
     }
 
     function _validateData($request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'title' => 'required',
             'start_at' => 'required',
             'deadline_at' => 'required',
@@ -150,6 +178,6 @@ class UserController extends Controller
 
     function resetPassword($id)
     {
-        die('resetPassword '.$id);
+        die('resetPassword ' . $id);
     }
 }

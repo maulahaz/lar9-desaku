@@ -69,11 +69,13 @@ Route::get('/undercon', [PageController::class, 'undercon']);
 Route::post('/admin/user/update-status-user', [UserController::class, 'updateStatusUser']);
 Route::get('/admin/user/hapus/{id}', [UserController::class, 'hapus']);
 // Route::get('/admin/user/{id}/detail', [UserController::class, 'detail']);
-Route::resource('admin/user', UserController::class);
+// Route::resource('admin/user', UserController::class);
 Route::get('/admin/user/reset-password/{id}', [UserController::class, 'resetPassword']);
 
 //--ADMIN:
 Route::prefix('admin')->name('admin.')->group(function () {
+    //--USER:
+    Route::resource('user', UserController::class);
     //--Penduduk:
     Route::get('penduduk/doc-data-warga', [PendudukController::class, 'docDataWarga'])->name('penduduk.doc-data-warga');
     Route::resource('penduduk', PendudukController::class);

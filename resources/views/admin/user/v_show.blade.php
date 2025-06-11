@@ -5,7 +5,11 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-12">
-        <h1><?= $pageTitle ?> <span class="smaller hide-sm">(Record ID: <?= $updateID ?>)</span></h1>
+        <h1>
+          <?= $pageTitle ?> <span class="smaller hide-sm">(Record ID:
+            <?= $updateID ?>)
+          </span>
+        </h1>
         <div class="row" id="msgBox">
           <div class="col-sm-12">
             @include('shared.v_msgbox', ['errors'=>$errors])
@@ -17,11 +21,16 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <a href="{{ url('/admin/user') }}" class="btn btn-sm btn-outline-info"><i class="fa fa-arrow-left"></i>&nbsp;List Data</a>
+            <a href="{{ url('/admin/user') }}" class="btn btn-sm btn-outline-info"><i
+                class="fa fa-arrow-left"></i>&nbsp;List Data</a>
             @if($loggedinInfo->role_id != 1)
-            <a href="{{ url('/admin/user/'.$dtUser->id.'/edit') }}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i>&nbsp;Edit Data</a>
-            <button type="button" class="btn btn-sm btn-outline-danger confirmation" data-flag="0" data-action="reset" data-id="{{$dtUser->id}}" data-controller="reset-password/{{$dtUser->id}}"><i class="fa fa-undo"></i>&nbsp;Reset Password</button>
-            <button type="button" class="btn btn-sm btn-danger float-right" data-toggle="modal" data-target="#modal-delete-{{$dtUser->id}}"><i class="fa fa-trash"></i>&nbsp;Hapus Data</button>
+            <a href="{{ url('/admin/user/'.$dtUser->id.'/edit') }}" class="btn btn-sm btn-warning"><i
+                class="fa fa-edit"></i>&nbsp;Edit Data</a>
+            <button type="button" class="btn btn-sm btn-outline-danger confirmation" data-flag="0" data-action="reset"
+              data-id="{{$dtUser->id}}" data-controller="reset-password/{{$dtUser->id}}"><i
+                class="fa fa-undo"></i>&nbsp;Reset Password</button>
+            <button type="button" class="btn btn-sm btn-danger float-right" data-toggle="modal"
+              data-target="#modal-delete-{{$dtUser->id}}"><i class="fa fa-trash"></i>&nbsp;Hapus Data</button>
             @endif
           </div>
           <!-- /.card-body -->
@@ -67,10 +76,12 @@
           <!-- /.card-header -->
           <div class="card-body">
             @if (empty($dtUser->picture))
-            <form name="frm_upload" action="{{ url('admin/user/upload-picture/'.$dtUser->id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+            <form name="frm_upload" action="{{ url('admin/user/upload-picture/'.$dtUser->id) }}" method="POST"
+              class="form-horizontal" enctype="multipart/form-data">
               @method('PUT')
               @csrf
-              <div class="text-center"><img class="profile-user-img img-fluid img-circle mb-3" src="{{ url('images/noimage.jpg') }}" alt="Gambar"></div>
+              <div class="text-center"><img class="profile-user-img img-fluid img-circle mb-3"
+                  src="{{ url('images/noimage.jpg') }}" alt="Gambar"></div>
               <p class="text-center">Gambar belum ada.</p>
               <p class="text-center">Silahkan pilih gambar kemudian tekan UPLOAD.</p>
               <div class="input-group mb-2">
@@ -107,12 +118,13 @@
       <div class="modal-header bg-danger">
         <h4 class="modal-title">Hapus Data</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <p>Apakah anda yakin ?</p>
-        <p>Anda akan menghapus data. Setelah di eksekusi, proses ini tidak dapat dibatalkan. Apakah Anda benar-benar ingin melakukan nya?</p>
+        <p>Anda akan menghapus data. Setelah di eksekusi, proses ini tidak dapat dibatalkan. Apakah Anda benar-benar
+          ingin melakukan nya?</p>
       </div>
       <div class="modal-footer justify-content-between">
         <form action="{{ url('admin/user', [$dtUser->id]) }}" method="POST">
@@ -120,7 +132,8 @@
           @method('DELETE')
           <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-check"></i>&nbsp;Ya, Hapus data!</button>
         </form>
-        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Batal</button>
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i
+            class="fa fa-times"></i>&nbsp;Batal</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -139,15 +152,17 @@
         <div class="modal-header">
           <h4 class="modal-title"><i class="fa fa-trash"></i> Hapus Gambar</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
+            <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body">
           <p>Apakah anda yakin ?</p>
-          <p>Anda akan menghapus gambar. Setelah di eksekusi, proses ini tidak dapat dibatalkan. Apakah Anda benar-benar ingin melakukan nya?</p>
+          <p>Anda akan menghapus gambar. Setelah di eksekusi, proses ini tidak dapat dibatalkan. Apakah Anda benar-benar
+            ingin melakukan nya?</p>
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-check"></i>&nbsp;Ya, Hapus gambar!</button>
+          <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-check"></i>&nbsp;Ya, Hapus
+            gambar!</button>
           <button class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Batal</button>
         </div>
       </div>

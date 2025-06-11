@@ -14,9 +14,11 @@
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="{{ url('t_adminlte3') }}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <!-- Ionicons -->
-  {{-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
+  {{--
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
   <!-- Tempusdominus Bbootstrap 4 -->
-  <link rel="stylesheet" href="{{url('t_adminlte3/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
+  <link rel="stylesheet"
+    href="{{url('t_adminlte3/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
   <!-- iCheck -->
   <link rel="stylesheet" href="{{url('t_adminlte3/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
   <!-- JQVMap -->
@@ -56,8 +58,12 @@
       <div class="brand-logo text-center">
         <!-- Brand Logo -->
         <a href="{{url('/')}}" class="brand-link">
-          <!-- <img src="{{url('images/logo.png')}}" alt="Apps Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
-          <img src="{{url('images/kurses-bg.png')}}" alt="Apps Logo" width="150px">
+          {{-- <img src="{{url('images/logo.png')}}" alt="Apps Logo" width="150px"> --}}
+          @php
+          $logo = \App\Models\Config::where('key', 'logo')->first();
+          $logoPath = $logo ? "images/".$logo->value : 'images/logo.png';
+          @endphp
+          <img src="{{ url($logoPath) }}" alt="Apps Logo" width="150px">
           <!-- <span class="brand-text font-weight-light">Kurses</span> -->
         </a>
       </div>
@@ -66,7 +72,8 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="{{ url('uploads/user') }}/{{ Auth::user()->picture }}" class="img-circle elevation-2" alt="User Image">
+            <img src="{{ url('uploads/user') }}/{{ Auth::user()->picture }}" class="img-circle elevation-2"
+              alt="User Image">
           </div>
           <div class="info">
             @if(auth()->user())
@@ -81,28 +88,63 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-            <li class="nav-header">ADMIN</li>
-                        
+            <li class="nav-header">AKUN</li>
+            <li class="nav-item">
+              <a href="{{url('account/profile')}}"
+                class="nav-link {{request()->is('account/profile') ? 'active' : ''}}">
+                <i class="nav-icon fas fa-user-circle"></i>
+                <p>Profil</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{url('account/dashboard')}}"
+                class="nav-link {{request()->is('account/dashboard') ? 'active' : ''}}">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+            @if(auth()->user())
+            <li class="nav-item">
+              <a href="{{url('logout')}}" class="nav-link">
+                <i class="nav-icon fas fa-file"></i>
+                <p>Logout</p>
+              </a>
+            </li>
+            @endif
+
+            <li class="nav-header">MANAJEMEN</li>
+
             @if($loggedinInfo->role_id == 88)
             {{-- Penduduk --}}
-            <li class="nav-item has-treeview {{request()->is('admin/penduduk') ? 'menu-open' : 'menu-close'}}">
+            {{-- <li class="nav-item has-treeview {{request()->is('admin/penduduk') ? 'menu-open' : 'menu-close'}}">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
                 <p>Penduduk<i class="right fas fa-angle-left"></i></p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ url('admin/penduduk') }}" class="nav-link {{request()->is('admin/penduduk') ? 'active' : ''}}">
+                  <a href="{{ url('admin/penduduk') }}"
+                    class="nav-link {{request()->is('admin/penduduk') ? 'active' : ''}}">
                     <i class="fas fa-bars nav-icon"></i>
                     <p>Data</p>
                   </a>
                 </li>
               </ul>
+            </li> --}}
+
+            {{-- Penduduk --}}
+            <li class="nav-item">
+              <a href="{{url('admin/penduduk')}}"
+                class="nav-link {{request()->is('admin/penduduk') ? 'active' : ''}}">
+                <i class="nav-icon fas fa-users"></i>
+                <p>Penduduk</p>
+              </a>
             </li>
 
             {{-- Kelahiran --}}
             <li class="nav-item">
-              <a href="{{url('admin/kelahiran')}}" class="nav-link {{request()->is('admin/kelahiran') ? 'active' : ''}}">
+              <a href="{{url('admin/kelahiran')}}"
+                class="nav-link {{request()->is('admin/kelahiran') ? 'active' : ''}}">
                 <i class="nav-icon fas fa-baby"></i>
                 <p>Kelahiran</p>
               </a>
@@ -118,7 +160,8 @@
 
             {{-- Perpindahan --}}
             <li class="nav-item">
-              <a href="{{url('admin/perpindahan')}}" class="nav-link {{request()->is('admin/perpindahan') ? 'active' : ''}}">
+              <a href="{{url('admin/perpindahan')}}"
+                class="nav-link {{request()->is('admin/perpindahan') ? 'active' : ''}}">
                 <i class="nav-icon fas fa-suitcase"></i>
                 <p>Perpindahan</p>
               </a>
@@ -134,7 +177,8 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ url('admin/perpindahan') }}" class="nav-link {{request()->is('admin/perpindahan') ? 'active' : ''}}">
+                  <a href="{{ url('admin/perpindahan') }}"
+                    class="nav-link {{request()->is('admin/perpindahan') ? 'active' : ''}}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Data</p>
                   </a>
@@ -147,91 +191,73 @@
             @if($loggedinInfo->role_id != 1)
             <li class="nav-item">
               <a href="{{url('admin/user')}}" class="nav-link {{request()->is('admin/user') ? 'active' : ''}}">
-                <i class="nav-icon fas fa-users"></i>
+                <i class="nav-icon fas fa-user"></i>
                 <p>Pengguna</p>
               </a>
             </li>
             @endif
 
             <!-- Admin Menu -->
-@if(auth()->user()->role_id == 88)
-<li class="nav-item">
-    <a href="{{ route('admin.config') }}" class="nav-link">
-        <i class="nav-icon fas fa-cogs"></i>
-        <p>Konfigurasi</p>
-    </a>
-</li>
-@endif
+            @if(auth()->user()->role_id == 88)
+            <li class="nav-item">
+              <a href="{{ route('admin.config') }}" class="nav-link">
+                <i class="nav-icon fas fa-cogs"></i>
+                <p>Konfigurasi</p>
+              </a>
+            </li>
+            @endif
 
-@if($loggedinInfo->role_id == 88)
-{{-- Materi --}}
-<li class="nav-item has-treeview {{request()->is('admin/materi') ? 'menu-open' : 'menu-close'}}">
-  <a href="#" class="nav-link">
-    <i class="nav-icon fas fa-book"></i>
-    <p>Materi<i class="right fas fa-angle-left"></i></p>
-  </a>
-  <ul class="nav nav-treeview">
-    <li class="nav-item">
-      <a href="{{ url('admin/materi') }}" class="nav-link {{request()->is('admin/materi') ? 'active' : ''}}">
-        <i class="far fa-circle nav-icon"></i>
-        <p>List</p>
-      </a>
-    </li>
-    <!-- <li class="nav-item">
+            @if($loggedinInfo->role_id == 88)
+            {{-- Materi --}}
+            <li class="nav-item has-treeview {{request()->is('admin/materi') ? 'menu-open' : 'menu-close'}}">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>Materi<i class="right fas fa-angle-left"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ url('admin/materi') }}"
+                    class="nav-link {{request()->is('admin/materi') ? 'active' : ''}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>List</p>
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
       <a href="{{ url('admin/materi/report') }}" class="nav-link">
         <i class="far fa-circle nav-icon"></i>
         <p>Report</p>
       </a>
     </li> -->
-  </ul>
-</li>
-
-{{-- Kursus --}}
-<li class="nav-item has-treeview {{request()->is('admin/materi') ? 'menu-open' : 'menu-close'}}">
-  <a href="#" class="nav-link">
-    <i class="nav-icon fas fa-book"></i>
-    <p>Kursus<i class="right fas fa-angle-left"></i></p>
-  </a>
-  <ul class="nav nav-treeview">
-    <li class="nav-item">
-      <a href="{{ url('admin/kursus') }}" class="nav-link {{request()->is('admin/kursus') ? 'active' : ''}}">
-        <i class="far fa-circle nav-icon"></i>
-        <p>List</p>
-      </a>
-    </li>
-  </ul>
-</li>
-@endif
-@if($loggedinInfo->role_id == 1)
-<li class="nav-item">
-  <a href="{{url('tugas-exec')}}" class="nav-link {{request()->is('tugas-exec') ? 'active' : ''}}">
-    <i class="nav-icon fas fa-tasks"></i>
-    <p>Tugas Ku</p>
-  </a>
-</li>
-@endif
-
-            <li class="nav-header">ACCOUNT</li>
-            <li class="nav-item">
-              <a href="{{url('account/profile')}}" class="nav-link {{request()->is('account/profile') ? 'active' : ''}}">
-                <i class="nav-icon fas fa-user-circle"></i>
-                <p>Profil</p>
-              </a>
+              </ul>
             </li>
-            <li class="nav-item">
-              <a href="{{url('account/dashboard')}}" class="nav-link {{request()->is('account/dashboard') ? 'active' : ''}}">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>Dashboard</p>
+
+            {{-- Kursus --}}
+            <li class="nav-item has-treeview {{request()->is('admin/materi') ? 'menu-open' : 'menu-close'}}">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>Kursus<i class="right fas fa-angle-left"></i></p>
               </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ url('admin/kursus') }}"
+                    class="nav-link {{request()->is('admin/kursus') ? 'active' : ''}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>List</p>
+                  </a>
+                </li>
+              </ul>
             </li>
-            @if(auth()->user())
+            @endif
+            @if($loggedinInfo->role_id == 1)
             <li class="nav-item">
-              <a href="{{url('logout')}}" class="nav-link">
-                <i class="nav-icon fas fa-file"></i>
-                <p>Logout</p>
+              <a href="{{url('tugas-exec')}}" class="nav-link {{request()->is('tugas-exec') ? 'active' : ''}}">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>Tugas Ku</p>
               </a>
             </li>
             @endif
+
+            
 
           </ul>
         </nav>

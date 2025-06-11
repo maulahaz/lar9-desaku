@@ -40,11 +40,11 @@
           >
           <ul class="dropdown-menu">
             <li class="nav-item">
-              <a class="nav-link" href="{{url('page#course')}}">Kursus</a>
+              <a class="nav-link" href="{{url('page#course')}}">Surat-surat</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{url('page#course-detail')}}"
-                >Detil Kursus</a
+                >Pengaduan</a
               >
             </li>
           </ul>
@@ -60,7 +60,7 @@
         @if(!Auth::check())
         <li class="nav-item">
           <a href="{{url('login')}}" class="nav-link">
-            <i class="ti-user"></i>&nbsp;&nbsp;Sign in
+            <i class="ti-user"></i>&nbsp;&nbsp;Login/Daftar
           </a>
         </li>
         @else

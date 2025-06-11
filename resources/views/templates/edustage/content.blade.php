@@ -4,7 +4,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <div class="banner_content text-center">
+          {{-- <div class="banner_content text-center">
             <p class="text-uppercase">
               Kursus Online Tersukses Se Asia
             </p>
@@ -15,7 +15,7 @@
               <a href="#" class="primary-btn2 mb-3 mb-sm-0">pelajari</a>
               <a href="{{url('/#pilihan-kursus')}}" class="primary-btn ml-sm-3 ml-0">lihat kursus</a>
             </div>
-          </div>
+          </div> --}}
         </div>
       </div>
     </div>
@@ -27,11 +27,11 @@
 <section class="feature_area section_gap_top">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-lg-5">
+      <div class="col-lg-8">
         <div class="main_title">
-          <h2 class="mb-3">Mengapa Memilih Kami</h2>
+          <h2 class="mb-3">Tentang Kami</h2>
           <p>
-            Kredibilitas, Pengalaman dan Mutu
+            Desa kami merupakan tempat tinggal yang nyaman, aman, dan tertib, di mana masyarakat hidup harmonis dalam suasana yang bersih dan tertata rapi. Lingkungan yang kondusif dan bebas dari gangguan, menciptakan rasa tenang bagi warga setiap hari. Selain itu, desa kami menerapkan sistem administrasi yang tertib dan transparan, memastikan pelayanan publik berjalan efektif dan efisien, sehingga seluruh kebutuhan dan urusan warga dapat terlayani dengan baik. Dengan suasana yang kondusif dan pengelolaan yang profesional, semoga Desa kami menjadi desa percontohan untuk membangun masa depan yang aman dan harmonis bersama keluarga dan komunitas.
           </p>
         </div>
       </div>

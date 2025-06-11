@@ -31,78 +31,126 @@
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
-  	<div class="row">
-  	  <div class="col-12">
-  	  	<div class="card card-primary card-outline">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-primary card-outline">
           <div class="card-header">
             <!-- ONLY WEBMASTER CAN ADD DATA -->
             @if($loggedinInfo->role_id == 99)
-            <a href="{{ url('/admin/user/create') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;Tambah Data</a>
+            <a href="{{ url('/admin/user/create') }}" class="btn btn-sm btn-primary"><i
+                class="fa fa-plus"></i>&nbsp;Tambah Data</a>
             @endif
             <div class="card-tools">
-              <div class="input-group input-group-sm" style="width: 250px;">
-                <input type="text" name="table_search" class="form-control float-right" placeholder="Cari..">
-
-                <div class="input-group-append">
-                  <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+              <form action="{{ route('admin.user.index') }}" method="GET" class="form-inline">
+                <div class="input-group input-group-sm" style="width: 250px;">
+                  <input type="text" name="search" class="form-control float-right" placeholder="Cari.."
+                    value="{{ request('search') }}">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                  </div>
                 </div>
-              </div>
+                <a href="{{ route('admin.user.index', ['reset' => true]) }}" class="btn btn-sm btn-default">Reset</a>
+              </form>
             </div>
           </div>
           <!-- /.card-header -->
-  	  		<div class="card-body table-responsive p-0">
+          <div class="card-body table-responsive p-0">
             <table class="table table-hover text-nowrap">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Foto</th>
-                    <th>User ID</th>
-                    <th>Email</th>
-                    <th>Nama</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                	<?php $no = 1; ?>
-                	@foreach($dtUser as $row)
-                  <tr>
-                    <td>{{$no++}}</td>
-                    <td>
-                      @if(!empty($row->picture))
-                      <img class="profile-user-img img-fluid img-circle" src="{{ url('uploads/user/'.$row->picture) }}" alt="Foto">
-                      @else
-                      <img class="profile-user-img img-fluid img-circle" src="{{ url('images/noimage.jpg') }}" alt="Foto">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Foto</th>
+                  <th>
+                    <a
+                      href="{{ route('admin.user.index', ['sort' => 'username', 'direction' => ($sort === 'username' && $direction === 'asc') ? 'desc' : 'asc'] + request()->except(['sort', 'direction'])) }}">
+                      User ID
+                      @if ($sort === 'username')
+                      <i class="fas fa-sort-{{ $direction === 'asc' ? 'up' : 'down' }}"></i>
                       @endif
-                    </td>
-                    <td>{{$row->username}}</td>
-                    <td>{{$row->email}}</td>
-                    <td>{{$row->name}}</td>
-                    <td>{{$row->role_id}}</td>
-                    <td>
-                      @if($row->status == 'Active')
-                        <a class="updateStatusUser" id="user-{{$row->id}}" user_id="{{ $row->id }}" href="javascript:void(0)">Active</a>
-                      @else
-                        <a class="updateStatusUser" id="user-{{$row->id}}" user_id="{{ $row->id }}" href="javascript:void(0)">Inactive</a>
+                    </a>
+                  </th>
+                  <th>
+                    <a
+                      href="{{ route('admin.user.index', ['sort' => 'email', 'direction' => ($sort === 'email' && $direction === 'asc') ? 'desc' : 'asc'] + request()->except(['sort', 'direction'])) }}">
+                      Email
+                      @if ($sort === 'email')
+                      <i class="fas fa-sort-{{ $direction === 'asc' ? 'up' : 'down' }}"></i>
                       @endif
-                    </td>
-                    <td>
-                      <a href="{{ url('/admin/user/'.$row->id) }}" class="btn btn-sm btn-info"><i class="fa fa-search"></i>&nbsp;Detail</a>
-                      <!-- <a href="{{ url('/admin/user/'.$row->id.'/edit') }}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i>&nbsp;Edit</a> -->
-                      <!-- <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$row->id}}"><i class="fa fa-trash"></i>&nbsp;Delete</button> -->
-                      <!-- <a href="javascript:void(0)" class="btn btn-sm btn-warning confirmDelete" record="user" record_id="{{$row->id}}"><i class="fa fa-edit"></i>&nbsp;Hapus</a> -->
-                    </td>
-                    
-                  </tr>
-                  @endforeach
-                </tbody>
-              </table>
-  	      </div>
-  	    </div><!-- /.card -->
-  	
-  	  </div>
-  	</div>
+                    </a>
+                  </th>
+                  <th>
+                    <a
+                      href="{{ route('admin.user.index', ['sort' => 'name', 'direction' => ($sort === 'name' && $direction === 'asc') ? 'desc' : 'asc'] + request()->except(['sort', 'direction'])) }}">
+                      Nama
+                      @if ($sort === 'name')
+                      <i class="fas fa-sort-{{ $direction === 'asc' ? 'up' : 'down' }}"></i>
+                      @endif
+                    </a>
+                  </th>
+                  <th>
+                    <a
+                      href="{{ route('admin.user.index', ['sort' => 'role_id', 'direction' => ($sort === 'role_id' && $direction === 'asc') ? 'desc' : 'asc'] + request()->except(['sort', 'direction'])) }}">
+                      Role
+                      @if ($sort === 'role_id')
+                      <i class="fas fa-sort-{{ $direction === 'asc' ? 'up' : 'down' }}"></i>
+                      @endif
+                    </a>
+                  </th>
+                  <th>
+                    <a
+                      href="{{ route('admin.user.index', ['sort' => 'status', 'direction' => ($sort === 'status' && $direction === 'asc') ? 'desc' : 'asc'] + request()->except(['sort', 'direction'])) }}">
+                      Status
+                      @if ($sort === 'status')
+                      <i class="fas fa-sort-{{ $direction === 'asc' ? 'up' : 'down' }}"></i>
+                      @endif
+                    </a>
+                  </th>
+                  <th class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $no = 1; ?>
+                @foreach($dtUser as $row)
+                <tr>
+                  <td>{{$no++}}</td>
+                  <td>
+                    @if(!empty($row->picture))
+                    <img class="profile-user-img img-fluid img-circle" src="{{ url('uploads/user/'.$row->picture) }}"
+                      alt="Foto">
+                    @else
+                    <img class="profile-user-img img-fluid img-circle" src="{{ url('images/noimage.jpg') }}" alt="Foto">
+                    @endif
+                  </td>
+                  <td>{{$row->username}}</td>
+                  <td>{{$row->email}}</td>
+                  <td>{{$row->name}}</td>
+                  <td>{{$row->role_id}}</td>
+                  <td>
+                    @if($row->status == 'Active')
+                    <a class="updateStatusUser" id="user-{{$row->id}}" user_id="{{ $row->id }}"
+                      href="javascript:void(0)">Active</a>
+                    @else
+                    <a class="updateStatusUser" id="user-{{$row->id}}" user_id="{{ $row->id }}"
+                      href="javascript:void(0)">Inactive</a>
+                    @endif
+                  </td>
+                  <td class="text-center">
+                    <a href="{{ url('/admin/user/'.$row->id) }}" class="btn btn-sm btn-info"><i
+                        class="fa fa-eye"></i></a>
+                    <!-- <a href="{{ url('/admin/user/'.$row->id.'/edit') }}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i>&nbsp;Edit</a> -->
+                    <!-- <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$row->id}}"><i class="fa fa-trash"></i>&nbsp;Delete</button> -->
+                    <!-- <a href="javascript:void(0)" class="btn btn-sm btn-warning confirmDelete" record="user" record_id="{{$row->id}}"><i class="fa fa-edit"></i>&nbsp;Hapus</a> -->
+                  </td>
+
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div><!-- /.card -->
+
+      </div>
+    </div>
   </div>
 </section>
 
@@ -125,7 +173,8 @@
         <form action="{{ url('admin/user', [$dt->id]) }}" method="POST">
           @csrf
           @method('DELETE')
-          <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-danger"></i>&nbsp;Yes, Confirm Delete</button>
+          <button class="btn btn-sm btn-danger" type="submit"><i class="fa fa-danger"></i>&nbsp;Yes, Confirm
+            Delete</button>
         </form>
       </div>
     </div>
@@ -137,7 +186,7 @@
 @endforeach
 
 @push('scripts')
-  <script src="{{url('js/mhz_script.js')}}"></script>
+<script src="{{url('js/mhz_script.js')}}"></script>
 @endpush
 
 @endsection
