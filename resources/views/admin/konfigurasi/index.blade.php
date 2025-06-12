@@ -16,7 +16,7 @@ $loggedinInfo = auth()->user();
 
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="{{url('admin/user')}}">Beranda</a></li>
+          <li class="breadcrumb-item"><a href="{{url('account/dashboard')}}">Beranda</a></li>
           <li class="breadcrumb-item active">{{ $pageTitle }}</li>
         </ol>
       </div><!-- /.col -->

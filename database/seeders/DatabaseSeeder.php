@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             KelahiranSeeder::class,
             KematianSeeder::class,
             PerpindahanSeeder::class,
-            ConfigSeeder::class
+            ConfigSeeder::class,
+            KeuanganSeeder::class,
         ]);
     }
 }

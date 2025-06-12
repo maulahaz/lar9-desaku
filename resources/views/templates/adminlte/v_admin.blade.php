@@ -141,6 +141,15 @@
               </a>
             </li>
 
+            {{-- Keuangan --}}
+            <li class="nav-item">
+              <a href="{{url('admin/keuangan')}}"
+                class="nav-link {{request()->is('admin/keuangan') ? 'active' : ''}}">
+                <i class="nav-icon fas fa-money-bill"></i>
+                <p>Keuangan</p>
+              </a>
+            </li>
+
             {{-- Kelahiran --}}
             <li class="nav-item">
               <a href="{{url('admin/kelahiran')}}"

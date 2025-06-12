@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PendudukController;
 use App\Http\Controllers\Admin\KelahiranController;
 use App\Http\Controllers\Admin\KematianController;
 use App\Http\Controllers\Admin\PerpindahanController;
+use App\Http\Controllers\Admin\KeuanganController;
 use App\Http\Controllers\Admin\ConfigController;
 //--PUBLIC:
 use App\Http\Controllers\AccountController;
@@ -85,8 +86,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('kelahiran', KelahiranController::class);
     //--Kematian:
     Route::resource('kematian', KematianController::class);
-    //--Perpanduan:
+    //--Perpindahan:
     Route::resource('perpindahan', PerpindahanController::class);
+    //--Keuangan:
+    Route::resource('keuangan', KeuanganController::class);
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
