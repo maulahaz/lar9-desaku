@@ -65,6 +65,12 @@ class KeuanganController extends Controller
         return redirect()->route('admin.keuangan.index')->with('success', 'Data keuangan berhasil ditambahkan.');
     }
 
+    public function show(Keuangan $keuangan)
+    {
+        //--Tidak ada halaman detail terpisah; arahkan ke form edit.
+        return redirect()->route('admin.keuangan.edit', $keuangan);
+    }
+
     public function edit(Keuangan $keuangan)
     {
         $this->data['pageTitle'] = 'Edit Data Keuangan';

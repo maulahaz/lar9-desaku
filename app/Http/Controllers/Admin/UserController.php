@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
 
@@ -14,19 +15,7 @@ class UserController extends Controller
     {
         $this->middleware(['auth']);
 
-        $this->data['webTitle'] = env('APP_WEB_TITLE');
-        // $this->data['currentMenu'] = 'Admin';
-        // $this->data['currentSubMenu'] = 'Materi';
-    }
-
-    public function indexX(Request $request)
-    {
-        $this->data['pageTitle'] = 'List Data Pengguna';
-        // $this->data['dtUser'] = User::all();
-        //--Utk Data Webmaster jangan dimasukan:
-        $this->data['dtUser'] = User::whereNotIn('role_id', [88, 99])->get();
-
-        return view('admin.user.v_index', $this->data);
+        $this->data['webTitle'] = env('APP_WEB_TITLE') ?: config('app.name');
     }
 
     public function index(Request $request)
@@ -35,22 +24,25 @@ class UserController extends Controller
 
         $query = User::whereNotIn('role_id', [88, 99]);
 
-        //--Search functionality
         if ($request->has('search')) {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('username', 'LIKE', "%{$searchTerm}%")
-                    ->orWhere('email', 'LIKE', "%{$searchTerm}%")
-                    ->orWhere('name', 'LIKE', "%{$searchTerm}%");
+                $q->where('nama_pengguna', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('nama', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('nik', 'LIKE', "%{$searchTerm}%");
             });
         }
 
-        //--Sorting
+        //--Only allow sorting on real columns:
+        $allowedSorts = ['nama_pengguna', 'nama', 'role_id', 'is_delete', 'created_at'];
         $sort = $request->input('sort', 'created_at');
-        $direction = $request->input('direction', 'desc');
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'created_at';
+        }
+        $direction = $request->input('direction') === 'asc' ? 'asc' : 'desc';
         $query->orderBy($sort, $direction);
 
-        $this->data['dtUser'] = $query->paginate(10);
+        $this->data['dtUser'] = $query->paginate(10)->withQueryString();
         $this->data['sort'] = $sort;
         $this->data['direction'] = $direction;
 
@@ -59,8 +51,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $dtUser = null;
-        $this->data['dtUser'] = $dtUser;
+        $this->data['dtUser'] = null;
         $this->data['pageTitle'] = 'Tambah Data Pengguna';
 
         return view('admin.user.v_form', $this->data);
@@ -68,116 +59,128 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $this->_validateData($request);
-
-        $posted = User::create([
-            'title' => $request->title,
-            'start_at' => date("Y-m-d H:i:s", strtotime($request->start_at)),
-            'deadline_at' => date("Y-m-d H:i:s", strtotime($request->deadline_at)),
-            'category_id' => 1,
-            'notes' => $request->notes,
-            'created_at' => date('Y-m-d H:i:s'),
-            'created_by' => Auth::user()->username,
+        $validated = $request->validate([
+            'nik' => 'required|max:20|unique:tbl_pengguna,nik',
+            'nama' => 'required|max:50',
+            'nama_pengguna' => 'required|min:4|max:50|unique:tbl_pengguna,nama_pengguna',
+            'no_telepon' => 'nullable|max:20',
+            'role_id' => 'required|integer',
+            'password' => 'required|min:6|confirmed',
         ]);
-        if ($posted) {
-            return redirect('admin/user')->with('success', 'Data baru berhasil ditambah.');
-        } else {
-            return redirect()->back()->with('error', 'Error pada saat tambah data. Silahkan hubungi Administrator.');
-        }
-    }
 
-    public function updateStatusUser(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = $request->all();
-            // echo "<pre>"; print_r($data); die();
-            if ($data['status'] == 'Active') {
-                $updt_status = 'Inactive';
-            } elseif ($data['status'] == 'Inactive') {
-                $updt_status = 'Active';
-            }
+        $roleName = $this->roleName((int) $validated['role_id']);
 
-            User::where('id', $data['user_id'])->update(['status' => $updt_status]);
-            return response()->json(['status' => $updt_status, 'user_id' => $data['user_id']]);
-        }
+        User::create([
+            'nik' => $validated['nik'],
+            'nama' => $validated['nama'],
+            'nama_pengguna' => $validated['nama_pengguna'],
+            'no_telepon' => $validated['no_telepon'] ?: '',
+            'role' => $roleName,
+            'role_id' => (int) $validated['role_id'],
+            'password' => Hash::make($validated['password']),
+            'foto' => '',
+            'is_delete' => 'N',
+        ]);
+
+        return redirect('admin/user')->with('success', 'Data pengguna berhasil ditambahkan.');
     }
 
     public function show($id)
     {
         $dtUser = User::findOrFail($id);
-        // dd($dtUser);
         $this->data['dtUser'] = $dtUser;
         $this->data['updateID'] = $id;
-        $this->data['pageTitle'] = 'Detail Data Pengguna : "' . $dtUser->username . '"';
+        $this->data['pageTitle'] = 'Detail Data Pengguna : "' . $dtUser->nama_pengguna . '"';
         return view('admin.user.v_show', $this->data);
-        // return view('admin.user.v_edit_user', $this->data);
     }
 
     public function edit($id)
     {
         $dtUser = User::findOrFail($id);
-        // dd($dtUser);
         $this->data['dtUser'] = $dtUser;
         $this->data['updateID'] = $id;
-        $this->data['pageTitle'] = 'Update Data Pengguna : "' . $dtUser->username . '"';
+        $this->data['pageTitle'] = 'Update Data Pengguna : "' . $dtUser->nama_pengguna . '"';
         return view('admin.user.v_form', $this->data);
     }
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'status' => 'required',
-            'role_id' => 'required',
+        $dtUser = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama' => 'required|max:50',
+            'nama_pengguna' => 'required|min:4|max:50|unique:tbl_pengguna,nama_pengguna,' . $dtUser->id_pengguna . ',id_pengguna',
+            'no_telepon' => 'nullable|max:20',
+            'role_id' => 'required|integer',
         ]);
 
-        $postedData = [
-            'status' => $request->status,
-            'role_id' => $request->role_id,
-            'updated_at' => date("Y-m-d H:i:s"),
-        ];
+        $validated['role'] = $this->roleName((int) $validated['role_id']);
+        $validated['no_telepon'] = $validated['no_telepon'] ?: '';
+        $validated['updated_at'] = date('Y-m-d H:i:s');
 
-        $dtUser = User::findOrFail($id);
-        if ($dtUser->update($postedData)) {
+        if ($dtUser->update($validated)) {
             return redirect('admin/user')->with('success', 'Data berhasil diupdate.');
-        } else {
-            return redirect()->back()->with('error', 'Error pada saat update data. Silahkan hubungi Administrator.');
         }
+
+        return redirect()->back()->with('error', 'Error pada saat update data.');
     }
 
-    function _validateData($request)
+    public function updateStatusUser(Request $request)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'start_at' => 'required',
-            'deadline_at' => 'required',
-            'category_id' => 'required',
+        if (!$request->ajax()) {
+            abort(400);
+        }
+
+        $dtUser = User::find($request->user_id);
+        if (!$dtUser) {
+            return response()->json(['error' => 'User tidak ditemukan'], 404);
+        }
+
+        $newValue = $dtUser->is_delete === 'Y' ? 'N' : 'Y';
+        $dtUser->is_delete = $newValue;
+        $dtUser->save();
+
+        return response()->json([
+            'status' => $newValue === 'N' ? 'Active' : 'Inactive',
+            'user_id' => $request->user_id,
         ]);
     }
 
     public function destroy($id)
     {
         $dtUser = User::findOrFail($id);
-        // dd($dtUser);
-        if ($dtUser->delete()) {
-            Session::flash('success', 'Data has been deleted');
-        }
+        //--Soft delete: keep the record but mark it inactive.
+        $dtUser->update(['is_delete' => 'Y']);
+        Session::flash('success', 'Data pengguna telah dinonaktifkan.');
 
-        return redirect('admin/tugas');
+        return redirect('admin/user');
     }
 
     public function hapus($id)
     {
-        $dtUser = User::findOrFail($id);
-        dd($dtUser);
-        // if ($dtUser->delete()) {
-        //     Session::flash('success', 'Data has been deleted');
-        // }
-
-        // return redirect('admin/tugas');
+        return $this->destroy($id);
     }
 
-    function resetPassword($id)
+    public function resetPassword($id)
     {
-        die('resetPassword ' . $id);
+        $dtUser = User::findOrFail($id);
+        $dtUser->update([
+            'password' => Hash::make('pass123'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect('admin/user')->with('success', 'Password pengguna direset menjadi "pass123".');
+    }
+
+    private function roleName(int $roleId): string
+    {
+        return [
+            1 => 'Staf',
+            2 => 'Supervisor',
+            3 => 'Warga',
+            5 => 'Administrator',
+            88 => 'Administrator',
+            99 => 'Webmaster',
+        ][$roleId] ?? 'Pengguna';
     }
 }

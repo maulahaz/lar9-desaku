@@ -9,109 +9,142 @@
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="{{url('admin')}}">Beranda</a></li>
-          <li class="breadcrumb-item active">--</li>
+          <li class="breadcrumb-item"><a href="{{ url('account/dashboard') }}">Beranda</a></li>
+          <li class="breadcrumb-item"><a href="{{ url('admin/user') }}">Pengguna</a></li>
+          <li class="breadcrumb-item active">{{ $dtUser ? 'Edit' : 'Tambah' }}</li>
         </ol>
       </div><!-- /.col -->
-
     </div><!-- /.row -->
 
-    @include('shared.v_msgbox', ['errors'=>$errors])
+    @include('shared.v_msgbox', ['errors' => $errors])
 
   </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
 
-<!-- Main content -->
 <section class="content">
   <div class="container-fluid">
-    <!-- Small boxes (Stat box) -->
     <div class="row">
       <div class="col-12">
-        <!-- Horizontal Form -->
         <div class="card card-info">
           <div class="card-header">
             <h3 class="card-title">Form {{ $pageTitle }}</h3>
           </div>
           <!-- /.card-header -->
 
-          <!-- form start -->
-          @if (!empty($dtUser))
-          <form action="{{ url('admin/user', $updateID) }}" class="form-horizontal" id="frm_update" name="frm_update"
-            method="POST">
-            @method('PATCH')
-
+          @if($dtUser)
+          <form class="form-horizontal myform" action="{{ url('admin/user/' . $dtUser->id_pengguna) }}" method="POST">
+            @method('PUT')
             @else
-
-            <form id="frm_create" name="frm_create" action="{{ url('admin/user') }}" method="POST"
-              class="form-horizontal">
-
+            <form class="form-horizontal myform" action="{{ url('admin/user') }}" method="POST">
               @endif
+              @csrf
 
-              {{ csrf_field() }}
               <div class="card-body">
-
                 <div class="form-group row">
-                  <label class="col-sm-2 col-form-label">Status</label>
-                  <div class="col-sm-3">
-                    <select name="status" id="status" class="form-control" required>
-                      <option value="">--Pilih--</option>
-                      <?php $optStatus = ['Active'=>'Active', 'Inactive'=>'Inactive']; ?>
-
-                      @foreach ($optStatus as $key => $value)
-                      <option value="{{ $key }}" {{ (!empty($dtUser) && ($dtUser->status == $key)) ? 'selected' : ''
-                        }}>{{ $value }}</option>
-                      @endforeach
-                    </select>
-                    <!-- <input type="text" class="form-control" name="status" value="{{ !empty($dtUser) ? $dtUser->status : old('status') }}" placeholder="Isi Status Pengguna"> -->
+                  <label for="nik" class="col-sm-2 col-form-label">NIK <span class="text-danger">*</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="nik" name="nik" maxlength="20"
+                      value="{{ old('nik', $dtUser->nik ?? '') }}" placeholder="Nomor Induk Kependudukan"
+                      {{ $dtUser ? 'readonly' : 'required' }}>
+                    @if($dtUser)
+                    <small class="text-muted">NIK tidak dapat diubah.</small>
+                    @endif
                   </div>
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm-2 col-form-label">Role/Jabatan</label>
-                  <div class="col-sm-3">
-                    <select name="role_id" id="role_id" class="form-control" required>
-                      <option value="">--Pilih--</option>
-                      <?php $optRoles = [1=>'Staff', 2=>'Supervisor', 3=>'Manager', 5=>'Administrator']; ?>
-
-                      @foreach ($optRoles as $key => $value)
-                      <option value="{{ $key }}" {{ (!empty($dtUser) && ($dtUser->role_id == $key)) ? 'selected' : ''
-                        }}>{{ $value }}</option>
-                      @endforeach
-                    </select>
-                    <!-- <input type="text" class="form-control" name="role_id" value="{{ !empty($dtUser) ? $dtUser->role_id : old('role_id') }}" placeholder="Isi Jabatan Pengguna"> -->
+                  <label for="nama" class="col-sm-2 col-form-label">Nama Lengkap <span
+                      class="text-danger">*</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="nama" name="nama" maxlength="50"
+                      value="{{ old('nama', $dtUser->nama ?? '') }}" placeholder="Nama lengkap" required>
                   </div>
                 </div>
 
+                <div class="form-group row">
+                  <label for="nama_pengguna" class="col-sm-2 col-form-label">User ID <span
+                      class="text-danger">*</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="nama_pengguna" name="nama_pengguna" maxlength="50"
+                      value="{{ old('nama_pengguna', $dtUser->nama_pengguna ?? '') }}" placeholder="User ID untuk login"
+                      required>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="no_telepon" class="col-sm-2 col-form-label">No. Telepon</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="no_telepon" name="no_telepon" maxlength="20"
+                      value="{{ old('no_telepon', $dtUser->no_telepon ?? '') }}" placeholder="No. Telepon">
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="role_id" class="col-sm-2 col-form-label">Role <span class="text-danger">*</span></label>
+                  <div class="col-sm-10">
+                    <select class="form-control" id="role_id" name="role_id" required>
+                      <option value="">-- Pilih Role --</option>
+                      @foreach([1 => 'Staf', 2 => 'Supervisor', 3 => 'Warga', 88 => 'Administrator'] as $idRole => $nmRole)
+                      <option value="{{ $idRole }}" {{ (string) old('role_id', $dtUser->role_id ?? '') === (string) $idRole ? 'selected' : '' }}>
+                        {{ $nmRole }}
+                      </option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+
+                @if(!$dtUser)
+                <div class="form-group row">
+                  <label for="password" class="col-sm-2 col-form-label">Password <span
+                      class="text-danger">*</span></label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password" name="password" minlength="6"
+                      placeholder="Minimal 6 karakter" required>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="password_confirmation" class="col-sm-2 col-form-label">Ulangi Password <span
+                      class="text-danger">*</span></label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+                      minlength="6" placeholder="Ulangi password" required>
+                  </div>
+                </div>
+                @else
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Password</label>
+                  <div class="col-sm-10">
+                    <a href="{{ url('admin/user/reset-password/' . $dtUser->id_pengguna) }}"
+                      class="btn btn-sm btn-outline-danger confirmReset"><i class="fa fa-key"></i>&nbsp;Reset Password ke
+                      "pass123"</a>
+                  </div>
+                </div>
+                @endif
               </div>
               <!-- /.card-body -->
+
               <div class="card-footer">
-                <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-save"></i>&nbsp;Simpan</button>
-                <a href="{{ url('admin/user') }}" class="btn btn-sm btn-default"><i
-                    class="fa fa-times"></i>&nbsp;Batal</a>
+                <a href="{{ url('admin/user') }}" class="btn btn-default"><i class="fa fa-arrow-left"></i>&nbsp;Kembali</a>
+                <button type="submit" class="btn btn-info float-right"><i class="fa fa-save"></i>&nbsp;Simpan</button>
               </div>
               <!-- /.card-footer -->
             </form>
         </div>
-        <!-- /.card -->
       </div>
     </div>
-    <!-- /.row -->
-
-  </div><!-- /.container-fluid -->
+  </div>
 </section>
-@stop
 
-@section('jsFile')
+@push('scripts')
 <script>
-  $(function () {
-    //Date picker
-    $('#start_date').datetimepicker({
-        format: 'DD-MMM-YYYY'
-    });
-    $('#deadline_date').datetimepicker({
-        format: 'DD-MMM-YYYY'
-    });
+  $('.confirmReset').click(function(e){
+      if(!confirm('Reset password pengguna ini menjadi "pass123"?')){
+          e.preventDefault();
+      }
   });
 </script>
-@stop
+@endpush
+
+@endsection

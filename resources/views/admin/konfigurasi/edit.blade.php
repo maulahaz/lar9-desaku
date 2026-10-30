@@ -37,7 +37,7 @@
           </div>
           <!-- /.card-header -->
           <!-- form start -->
-          <form action="{{ route('admin.config.update', $config->id) }}" class="form-horizontal" id="frm_update" name="frm_update" method="POST">
+          <form action="{{ route('admin.config.update', $config->id) }}" class="form-horizontal" id="frm_update" name="frm_update" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -55,12 +55,18 @@
                   @elseif($config->type == 'textarea')
                     <textarea class="form-control" id="value" name="value" rows="3">{{ $config->value }}</textarea>
                   @elseif($config->type == 'file')
+                    @if($config->value)
+                    <p class="mb-2"><img src="{{ url('images/' . $config->value) }}" alt="Current file"
+                        style="max-height:80px;max-width:200px;"></p>
+                    @endif
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="value" name="value">
+                        <input type="file" class="custom-file-input" id="value" name="value"
+                          accept="image/png,image/jpeg,image/jpg,image/gif,image/svg+xml">
                         <label class="custom-file-label" for="value">Choose file</label>
                       </div>
                     </div>
+                    <small class="text-muted">Biarkan kosong jika tidak ingin mengganti file.</small>
                   @endif
                 </div>
               </div>

@@ -72,12 +72,15 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="{{ url('uploads/user') }}/{{ Auth::user()->picture }}" class="img-circle elevation-2"
-              alt="User Image">
+            @if(Auth::user()->foto)
+            <img src="{{ url('uploads/user/' . Auth::user()->foto) }}" class="img-circle elevation-2" alt="User Image">
+            @else
+            <img src="{{ url('images/noimage.jpg') }}" class="img-circle elevation-2" alt="User Image">
+            @endif
           </div>
           <div class="info">
             @if(auth()->user())
-            <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+            <a href="{{ url('account/profile') }}" class="d-block">{{ Auth::user()->name }}</a>
             @else
             Guess
             @endif
@@ -112,25 +115,8 @@
             </li>
             @endif
 
+            @if(in_array((int) $loggedinInfo->role_id, [1, 2, 88, 99], true))
             <li class="nav-header">MANAJEMEN</li>
-
-            @if($loggedinInfo->role_id == 88)
-            {{-- Penduduk --}}
-            {{-- <li class="nav-item has-treeview {{request()->is('admin/penduduk') ? 'menu-open' : 'menu-close'}}">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-users"></i>
-                <p>Penduduk<i class="right fas fa-angle-left"></i></p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ url('admin/penduduk') }}"
-                    class="nav-link {{request()->is('admin/penduduk') ? 'active' : ''}}">
-                    <i class="fas fa-bars nav-icon"></i>
-                    <p>Data</p>
-                  </a>
-                </li>
-              </ul>
-            </li> --}}
 
             {{-- Penduduk --}}
             <li class="nav-item">
@@ -176,28 +162,9 @@
               </a>
             </li>
 
-            {{-- <li class="nav-item has-treeview {{request()->is('admin/perpindahan') ? 'menu-open' : 'menu-close'}}">
-              <a href="#" class="nav-link {{request()->is('tugas') ? 'active' : ''}}">
-                <i class="nav-icon fas fa-tasks"></i>
-                <p>
-                  Perpindahan
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ url('admin/perpindahan') }}"
-                    class="nav-link {{request()->is('admin/perpindahan') ? 'active' : ''}}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Data</p>
-                  </a>
-                </li>
-              </ul>
-            </li> --}}
-
             @endif
 
-            @if($loggedinInfo->role_id != 1)
+            @if($loggedinInfo->role_id == 88)
             <li class="nav-item">
               <a href="{{url('admin/user')}}" class="nav-link {{request()->is('admin/user') ? 'active' : ''}}">
                 <i class="nav-icon fas fa-user"></i>
@@ -216,55 +183,12 @@
             </li>
             @endif
 
-            @if($loggedinInfo->role_id == 88)
-            {{-- Materi --}}
-            <li class="nav-item has-treeview {{request()->is('admin/materi') ? 'menu-open' : 'menu-close'}}">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-book"></i>
-                <p>Materi<i class="right fas fa-angle-left"></i></p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ url('admin/materi') }}"
-                    class="nav-link {{request()->is('admin/materi') ? 'active' : ''}}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>List</p>
-                  </a>
-                </li>
-                <!-- <li class="nav-item">
-      <a href="{{ url('admin/materi/report') }}" class="nav-link">
-        <i class="far fa-circle nav-icon"></i>
-        <p>Report</p>
-      </a>
-    </li> -->
-              </ul>
-            </li>
-
-            {{-- Kursus --}}
-            <li class="nav-item has-treeview {{request()->is('admin/materi') ? 'menu-open' : 'menu-close'}}">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-book"></i>
-                <p>Kursus<i class="right fas fa-angle-left"></i></p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ url('admin/kursus') }}"
-                    class="nav-link {{request()->is('admin/kursus') ? 'active' : ''}}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>List</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            @endif
-            @if($loggedinInfo->role_id == 1)
             <li class="nav-item">
-              <a href="{{url('tugas-exec')}}" class="nav-link {{request()->is('tugas-exec') ? 'active' : ''}}">
-                <i class="nav-icon fas fa-tasks"></i>
-                <p>Tugas Ku</p>
+              <a href="{{ url('/') }}" target="_blank" class="nav-link">
+                <i class="nav-icon fas fa-globe"></i>
+                <p>Lihat Situs</p>
               </a>
             </li>
-            @endif
 
             
 

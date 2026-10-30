@@ -38,7 +38,8 @@
       <form action="{{ route('register') }}" method="post">
       	@csrf
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="ktp" value="{{ old('ktp') }}" placeholder="No. KTP">
+          <input type="text" class="form-control" name="nik" value="{{ old('nik') }}" placeholder="No. KTP / NIK"
+            maxlength="20" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-id-card"></span>
@@ -46,7 +47,8 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nama lengkap">
+          <input type="text" class="form-control" name="nama" value="{{ old('nama') }}" placeholder="Nama lengkap"
+            required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -54,7 +56,8 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="User name/ID">
+          <input type="text" class="form-control" name="username" value="{{ old('username') }}"
+            placeholder="User name/ID" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -62,15 +65,16 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
+          <input type="text" class="form-control" name="no_telepon" value="{{ old('no_telepon') }}"
+            placeholder="No. Telepon">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+              <span class="fas fa-phone"></span>
             </div>
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="password" placeholder="Password">
+          <input type="password" class="form-control" name="password" placeholder="Password" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -78,7 +82,8 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="password_confirmation" placeholder="Ulangi password">
+          <input type="password" class="form-control" name="password_confirmation" placeholder="Ulangi password"
+            required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -102,7 +107,7 @@
         </div>
       </form>
 
-      <a href="{{ route('login') }}" class="text-center">Saya warga</a>
+      <a href="{{ route('login') }}" class="text-center">Sudah punya akun? Login</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->

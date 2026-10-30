@@ -10,4 +10,11 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * Data yang dibagikan ke view dari controller.
+     *
+     * @var array
+     */
+    protected $data = [];
 }

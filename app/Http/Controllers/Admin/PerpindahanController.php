@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Perpindahan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PerpindahanController extends Controller
 {
@@ -14,16 +13,12 @@ class PerpindahanController extends Controller
         $this->middleware(['auth']);
 
         $this->data['webTitle'] = env('APP_WEB_TITLE');
-        // $this->data['currentMenu'] = 'Admin';
-        // $this->data['currentSubMenu'] = 'Materi';
     }
-
-    protected $data = [
-        'pageTitle' => 'Data Perpindahan'
-    ];
 
     public function index(Request $request)
     {
+        $this->data['pageTitle'] = 'Data Perpindahan';
+
         $query = Perpindahan::query();
 
         // Search functionality
@@ -60,7 +55,6 @@ class PerpindahanController extends Controller
     public function store(Request $request)
     {
         $validatedData = $this->validatePerpindahan($request);
-        $validatedData['created_by'] = Auth::id();
 
         Perpindahan::create($validatedData);
 
@@ -83,8 +77,7 @@ class PerpindahanController extends Controller
 
     public function update(Request $request, Perpindahan $perpindahan)
     {
-        $validatedData = $this->validatePerpindahan($request);
-        $validatedData['updated_by'] = Auth::id();
+        $validatedData = $this->validatePerpindahan($request, $perpindahan->id);
 
         $perpindahan->update($validatedData);
 
@@ -98,10 +91,12 @@ class PerpindahanController extends Controller
         return redirect()->route('admin.perpindahan.index')->with('success', 'Data perpindahan berhasil dihapus.');
     }
 
-    protected function validatePerpindahan(Request $request)
+    protected function validatePerpindahan(Request $request, $ignoreId = null)
     {
+        $uniqueRule = 'unique:perpindahans,nik' . ($ignoreId ? ',' . $ignoreId : '');
+
         return $request->validate([
-            'nik' => 'required|string|max:16',
+            'nik' => 'required|string|max:16|' . $uniqueRule,
             'nama' => 'required|string|max:255',
             'alamat_asal' => 'required|string',
             'alamat_tujuan' => 'required|string',

@@ -52,7 +52,7 @@ class KematianController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nik' => 'required|string|max:16',
+            'nik' => 'required|string|max:16|unique:kematians,nik',
             'nama' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P',
             'tanggal_lahir' => 'required|date',
@@ -84,7 +84,7 @@ class KematianController extends Controller
     public function update(Request $request, Kematian $kematian)
     {
         $validatedData = $request->validate([
-            'nik' => 'required|string|max:16',
+            'nik' => 'required|string|max:16|unique:kematians,nik,' . $kematian->id,
             'nama' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P',
             'tanggal_lahir' => 'required|date',

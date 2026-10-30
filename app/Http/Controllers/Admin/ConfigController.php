@@ -33,13 +33,34 @@ class ConfigController extends Controller
     public function update(Request $request, $id)
     {
         $config = Config::findOrFail($id);
-        $this->validate($request, [
-            'value' => 'required',
-        ]);
 
-        $config->value = $request->value;
+        if ($config->type === 'file') {
+            $request->validate([
+                'value' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            ]);
+
+            if ($request->hasFile('value')) {
+                $file = $request->file('value');
+                $newName = time() . '-' . $file->getClientOriginalName();
+                $file->move(public_path('images'), $newName);
+
+                $oldPath = public_path('images/' . $config->value);
+                if ($config->value && file_exists($oldPath) && !in_array($config->value, ['logo.png', 'icon.png', 'noimage.jpg'])) {
+                    @unlink($oldPath);
+                }
+
+                $config->value = $newName;
+            }
+        } else {
+            $this->validate($request, [
+                'value' => 'required',
+            ]);
+
+            $config->value = $request->value;
+        }
+
         $config->save();
 
-        return redirect()->route('admin.config.index')->with('success', 'Konfigurasi berhasil diperbarui.');
+        return redirect()->route('admin.config')->with('success', 'Konfigurasi berhasil diperbarui.');
     }
 }

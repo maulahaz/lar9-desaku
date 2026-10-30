@@ -1,23 +1,22 @@
 //-- Sumber dari Stack Developer:
 $(document).ready(function(){
-    $(".updateStatusUser").click(function(){
-        var status = $(this).text();
-        var user_id = $(this).attr("user_id");
+    $(document).on("click", ".updateStatusUser", function(){
+        var $el = $(this);
+        var user_id = $el.attr("user_id");
         $.ajax({
             type: "POST",
             url: "/admin/user/update-status-user",
-            data: {status: status, user_id: user_id},
+            data: {user_id: user_id},
             success: function(resp){
-                // console.log(resp);
                 if(resp['status'] == 'Active'){
-                    $('#user-'+user_id).html('<a class="updateStatusUser" href="javascript:void(0)">Active</a>');
+                    $el.text('Active');
                 }else if(resp['status'] == 'Inactive'){
-                    $('#user-'+user_id).html('<a class="updateStatusUser" href="javascript:void(0)">Inactive</a>')
+                    $el.text('Inactive');
                 }
             },
             error: function(){
                 alert("Error updateStatusUser");
-            } 
+            }
         });
     });
 

@@ -1,174 +1,127 @@
 @extends('templates/adminlte/v_admin')
 @section('content')
+
 <?php $loggedinInfo = auth()->user(); ?>
+
 <div class="content-header">
   <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">{{ $pageTitle }}</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="{{ url('account/dashboard') }}">Beranda</a></li>
+          <li class="breadcrumb-item"><a href="{{ url('admin/user') }}">Pengguna</a></li>
+          <li class="breadcrumb-item active">Detail</li>
+        </ol>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-sm-12">
-        <h1>
-          <?= $pageTitle ?> <span class="smaller hide-sm">(Record ID:
-            <?= $updateID ?>)
-          </span>
-        </h1>
-        <div class="row" id="msgBox">
-          <div class="col-sm-12">
-            @include('shared.v_msgbox', ['errors'=>$errors])
-          </div>
-        </div>
-        <div class="card mt-3">
-          <div class="card-header">
-            <h3 class="card-title">Opsi</h3>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <a href="{{ url('/admin/user') }}" class="btn btn-sm btn-outline-info"><i
-                class="fa fa-arrow-left"></i>&nbsp;List Data</a>
-            @if($loggedinInfo->role_id != 1)
-            <a href="{{ url('/admin/user/'.$dtUser->id.'/edit') }}" class="btn btn-sm btn-warning"><i
-                class="fa fa-edit"></i>&nbsp;Edit Data</a>
-            <button type="button" class="btn btn-sm btn-outline-danger confirmation" data-flag="0" data-action="reset"
-              data-id="{{$dtUser->id}}" data-controller="reset-password/{{$dtUser->id}}"><i
-                class="fa fa-undo"></i>&nbsp;Reset Password</button>
-            <button type="button" class="btn btn-sm btn-danger float-right" data-toggle="modal"
-              data-target="#modal-delete-{{$dtUser->id}}"><i class="fa fa-trash"></i>&nbsp;Hapus Data</button>
-            @endif
-          </div>
-          <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
+        @include('shared.v_msgbox', ['errors' => $errors])
       </div>
     </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-md-9 col-sm-7">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Data Detail</h3>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="record-details">
-              <dl class="row">
-                <dt class="col-sm-3">nama</dt>
-                <dd class="col-sm-9">: {{$dtUser->name }}</dd>
-                <dt class="col-sm-3">Alamat Email</dt>
-                <dd class="col-sm-9">: {{$dtUser->email }}</dd>
-                <dt class="col-sm-3">Status</dt>
-                <dd class="col-sm-9">: {{$dtUser->status }}</dd>
-                <dt class="col-sm-3">Jabatan</dt>
-                <dd class="col-sm-9">: {{$dtUser->role_id}}</dd>
-                <dt class="col-sm-3">Tanggal Dibuat</dt>
-                <dd class="col-sm-9">: {{$dtUser->created_at}}</dd>
-                <dt class="col-sm-3">Terakhir Update</dt>
-                <dd class="col-sm-9">: {{$dtUser->updated_at}}</dd>
-              </dl>
-            </div>
-          </div>
-          <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-      </div>
-      <div class="col-md-3 col-sm-5">
-        <!-- CARD GAMBAR -->
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Gambar</h3>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            @if (empty($dtUser->picture))
-            <form name="frm_upload" action="{{ url('admin/user/upload-picture/'.$dtUser->id) }}" method="POST"
-              class="form-horizontal" enctype="multipart/form-data">
-              @method('PUT')
-              @csrf
-              <div class="text-center"><img class="profile-user-img img-fluid img-circle mb-3"
-                  src="{{ url('images/noimage.jpg') }}" alt="Gambar"></div>
-              <p class="text-center">Gambar belum ada.</p>
-              <p class="text-center">Silahkan pilih gambar kemudian tekan UPLOAD.</p>
-              <div class="input-group mb-2">
-                <div class="custom-file">
-                  <input type="file" name="picture" class="custom-file-input">
-                  <label class="custom-file-label" for="foto">Masukan File Gambar</label>
-                </div>
-              </div>
-              <button type="submit" name="Upload" class="btn btn-sm btn-info btn-block">Upload</button>
-            </form>
-            @else
+      <div class="col-md-3">
+        <div class="card card-primary card-outline">
+          <div class="card-body box-profile">
             <div class="text-center">
-              <!-- ONLY USER IT'SELF WHO CAN DELETE/CHANGE THIS PICT -->
-              <!-- <p><button class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#delete-picture-modal"><i class="fa fa-times"></i> Hapus & Ganti Gambar</button></p> -->
-              <p style="width:200px; text-align: center; display: inline-block;">
-                <img src="{{ url('uploads/user/'.$dtUser->picture) }}" alt="picture preview" class="img-fluid">
-              </p>
+              @if(!empty($dtUser->foto))
+              <img class="profile-user-img img-fluid img-circle" src="{{ url('uploads/user/' . $dtUser->foto) }}"
+                alt="Foto Pengguna">
+              @else
+              <img class="profile-user-img img-fluid img-circle" src="{{ url('images/noimage.jpg') }}"
+                alt="Foto Pengguna">
+              @endif
             </div>
-            @endif
+            <h3 class="profile-username text-center mt-3">{{ $dtUser->nama }}</h3>
+            <p class="text-muted text-center">{{ $dtUser->role }}</p>
+            <ul class="list-group list-group-unbordered mb-3">
+              <li class="list-group-item">
+                <b>Status</b>
+                <span class="float-right">
+                  @if($dtUser->is_delete === 'Y')
+                  <span class="badge badge-danger">Tidak Aktif</span>
+                  @else
+                  <span class="badge badge-success">Aktif</span>
+                  @endif
+                </span>
+              </li>
+              <li class="list-group-item">
+                <b>Bergabung</b>
+                <span class="float-right">{{ $dtUser->created_at }}</span>
+              </li>
+            </ul>
+            <a href="{{ url('admin/user/' . $dtUser->id_pengguna . '/edit') }}" class="btn btn-warning btn-block"><i
+                class="fa fa-edit"></i>&nbsp;Edit Data</a>
+            <a href="{{ url('admin/user/reset-password/' . $dtUser->id_pengguna) }}"
+              class="btn btn-outline-danger btn-block confirmReset"><i class="fa fa-key"></i>&nbsp;Reset Password</a>
+            <a href="{{ url('admin/user') }}" class="btn btn-default btn-block"><i
+                class="fa fa-arrow-left"></i>&nbsp;Kembali ke List</a>
           </div>
-          <!-- /.card-body -->
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Detail Data Pengguna</h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <th style="width: 200px;">NIK</th>
+                  <td>{{ $dtUser->nik }}</td>
+                </tr>
+                <tr>
+                  <th>Nama Lengkap</th>
+                  <td>{{ $dtUser->nama }}</td>
+                </tr>
+                <tr>
+                  <th>User ID</th>
+                  <td>{{ $dtUser->nama_pengguna }}</td>
+                </tr>
+                <tr>
+                  <th>No. Telepon</th>
+                  <td>{{ $dtUser->no_telepon ?: '-' }}</td>
+                </tr>
+                <tr>
+                  <th>Role</th>
+                  <td>{{ $dtUser->role }} ({{ $dtUser->role_id }})</td>
+                </tr>
+                <tr>
+                  <th>Status</th>
+                  <td>{{ $dtUser->is_delete === 'Y' ? 'Tidak Aktif' : 'Aktif' }}</td>
+                </tr>
+                <tr>
+                  <th>Terakhir Diupdate</th>
+                  <td>{{ $dtUser->updated_at }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
-<!-- DELETE DATA -->
-<!-- ===================================================== -->
-<div class="modal fade" id="modal-delete-{{$dtUser->id}}">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-danger">
-        <h4 class="modal-title">Hapus Data</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Apakah anda yakin ?</p>
-        <p>Anda akan menghapus data. Setelah di eksekusi, proses ini tidak dapat dibatalkan. Apakah Anda benar-benar
-          ingin melakukan nya?</p>
-      </div>
-      <div class="modal-footer justify-content-between">
-        <form action="{{ url('admin/user', [$dtUser->id]) }}" method="POST">
-          @csrf
-          @method('DELETE')
-          <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-check"></i>&nbsp;Ya, Hapus data!</button>
-        </form>
-        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i
-            class="fa fa-times"></i>&nbsp;Batal</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<!-- DELETE PICTURE -->
-<!-- ===================================================== -->
-<div class="modal fade" id="delete-picture-modal" style="display: none;" aria-hidden="true">
-  <div class="modal-dialog">
-    <form class="form-horizontal" action="{{url('admin/user/delete-picture', [$dtUser->id])}}" method="POST">
-      @method('DELETE')
-      @csrf
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title"><i class="fa fa-trash"></i> Hapus Gambar</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Apakah anda yakin ?</p>
-          <p>Anda akan menghapus gambar. Setelah di eksekusi, proses ini tidak dapat dibatalkan. Apakah Anda benar-benar
-            ingin melakukan nya?</p>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-check"></i>&nbsp;Ya, Hapus
-            gambar!</button>
-          <button class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Batal</button>
-        </div>
-      </div>
-    </form>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
+</section>
+
+@push('scripts')
+<script>
+  $('.confirmReset').click(function(e){
+      if(!confirm('Reset password pengguna ini menjadi "pass123"?')){
+          e.preventDefault();
+      }
+  });
+</script>
+@endpush
+
 @endsection
